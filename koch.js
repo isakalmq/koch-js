@@ -3,7 +3,9 @@ const context = canvas.getContext('2d');
 
 var dotArray = [[0.1, 0.1], [0.5, 0.9], [0.9, 0.1]];
 
-const seed = [[0, 0], [1/3, 0], [0.5, Math.sqrt(3)/6], [2/3, 0], [1, 0]];
+//const seed = [[0, 0], [1/3, 0], [0.5, Math.sqrt(3)/6], [2/3, 0], [1, 0]];
+//const seed = [[0,0], [0,0.5], [0.5, 0.5], [0.5, 0], [0.5, -0.5], [1, -0.5], [1,0]];
+const seed = [[0,0], [1/4, 0], [1/4, 1/4], [1/2, 1/4], [1/2, 0], [1/2, -1/4], [3/4, -1/4], [3/4, 0], [1, 0]]
 
 var start = [[0,0], [1,0]];
 //var start = [[0, 0], [1, 0], [0.5, Math.sqrt(3)/6], [0,0]]
@@ -120,14 +122,14 @@ function updateIterationIndicator() {
     document.getElementById("iteration-indicator").innerHTML = "Iteration: " + iteration;
 }
 
-document.getElementById("zoom-in-button").addEventListener("click", function() {
+document.getElementById("zoom-in-button").addEventListener("click", e => {
     e.preventDefault();
     scale += 0.1
     updateZoomIndicator();
     draw();
 })
 
-document.getElementById("zoom-out-button").addEventListener("click", function() {
+document.getElementById("zoom-out-button").addEventListener("click", e => {
     e.preventDefault();
     scale -= 0.1
     updateZoomIndicator();
