@@ -17,14 +17,14 @@ button {
     padding: 15px;
     text-align: center;
     text-shadow: 2px 2px black;
-    font-size: 17px;
+    font-size: 1em;
 }
 
 select {
     background-color: green;
     border: none;
     color: white;
-    font-size: 17px;
+    font-size: 1em;
     padding: 15px;
     text-shadow: 2px 2px black;
     text-align: center;
@@ -32,13 +32,13 @@ select {
 option {
     background-color: white;
     color: black;
-    font-size: 17px;
+    font-size: 1em;
 }
 
 label {
     font-size: large;
     display: block;
-    font-size: 17px;
+    font-size: 1em;
 }
 
 #control {
