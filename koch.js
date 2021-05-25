@@ -1,24 +1,25 @@
 const canvas = document.getElementById("drawing-canvas");
 const context = canvas.getContext('2d');
 
-var dotArray = [[0.1, 0.1], [0.5, 0.9], [0.9, 0.1]];
+var seedMap = new Map();
+seedMap.set('Koch', [[0, 0], [1/3, 0], [0.5, Math.sqrt(3)/6], [2/3, 0], [1, 0]]);
+seedMap.set('Minkowski', [[0,0], [1/4, 0], [1/4, 1/4], [1/2, 1/4], [1/2, 0], [1/2, -1/4], [3/4, -1/4], [3/4, 0], [1, 0]]);
 
-const koch = [[0, 0], [1/3, 0], [0.5, Math.sqrt(3)/6], [2/3, 0], [1, 0]];
-const weird = [[0,0], [0,0.5], [0.5, 0.5], [0.5, 0], [0.5, -0.5], [1, -0.5], [1,0]];
-const minkowski = [[0,0], [1/4, 0], [1/4, 1/4], [1/2, 1/4], [1/2, 0], [1/2, -1/4], [3/4, -1/4], [3/4, 0], [1, 0]]
-const peano = [[0,0], [0,1], [1/2, 1], [1/2, 0], [1, 0], [1, 1]];
+var shapeMap = new Map();
+shapeMap.set('Line', [[0,0], [1,0]]);
+shapeMap.set('Triangle', [[0,0], [0.5, Math.sin(Math.PI/3)], [1,0], [0,0]]);
+shapeMap.set('Inverted triangle', [[0,0], [1,0],[0.5, Math.sin(Math.PI/3)], [0,0]]);
+shapeMap.set('Square', [[0,0], [0,1], [1,1], [1,0], [0,0]]);
 
-const seed = koch;
-var start = [[0,0], [1,0]];
-//var start = [[0, 0], [1, 0], [0.5, Math.sqrt(3)/6], [0,0]]
-//var start = [[0,0], [0.5, Math.sin(Math.PI/3)], [1,0], [0,0]];
+var seed = seedMap.get('Koch');
+var start = shapeMap.get('Line');
 
 var moving = false;
 var prevMouseX;
 var prevMouseY;
-var offset = [10,10];
+var offset = [260,260];
 
-var scale = 1;
+var scale = 0.5;
 
 var iteration = 0;
 var curr = start;
@@ -85,7 +86,7 @@ function iterate(curr, seed) {
 function draw()
 {
     canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight-300;
+    canvas.height = window.innerHeight-100;
     context.clearRect(0,0, canvas.width, canvas.height);
 
     var width = canvas.clientWidth;
@@ -150,16 +151,6 @@ canvas.addEventListener("pointerup", e => {
     e.preventDefault();
     moving = false;
 
-})
-
-canvas.addEventListener("pointermove", e => {
-    e.preventDefault();
-    if(moving) {
-        offset = [offset[0] + e.offsetX-prevMouseX, offset[1] + e.offsetY-prevMouseY]
-        prevMouseX = e.offsetX;
-        prevMouseY = e.offsetY;
-        draw();
-    }
 })
 
 canvas.addEventListener('wheel', e =>{
