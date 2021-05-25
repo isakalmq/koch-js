@@ -6,24 +6,26 @@
     <title>Koch-js</title>
 </head>
 
-<body>
+<body onload="draw()">
     <canvas id="drawing-canvas">
 
     </canvas>
-    <button type="button" id="iterate-button">Iterate!</button>
-    <button type="button" id="reset-button">Reset</button>
-    <button type="button" id="zoom-in-button">+</button>
-    <button type="button" id="zoom-out-button">-</button>
+    <div id='control'>
+        <button type="button" id="iterate-button">Iterate!</button>
+        <button type="button" id="reset-button">Reset</button>
+        <button type="button" id="zoom-in-button">+</button>
+        <button type="button" id="zoom-out-button">-</button>
 
-    <label for="curves">Choose a seed</label>
-    <select name="curves" id="seed-selector"></select>
+        <label for="curves">Choose a seed</label>
+        <select name="curves" id="seed-selector"></select>
 
-    <label for="shapes">Choose a start shape</label>
-    <select name="shapes" id="shape-selector"></select>
+        <label for="shapes">Choose a start shape</label>
+        <select name="shapes" id="shape-selector"></select>
 
-    <div id="zoom-indicator">-</div>
-    <div id="iteration-indicator">-</div>
-    
+        <div id="zoom-indicator">-</div>
+        <div id="iteration-indicator">-</div>
+    </div>
+
 
 
 </body>

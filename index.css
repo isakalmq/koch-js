@@ -9,3 +9,38 @@ html, body {
     display: block;
     width: 100%;
 }
+
+button {
+    background-color: green;
+    border: none;
+    color: white;
+    padding: 15px;
+    text-align: center;
+    text-shadow: 2px 2px black;
+    font-size: large;
+}
+
+select {
+    background-color: green;
+    border: none;
+    color: white;
+    font-size: large;
+    padding: 15px;
+    text-shadow: 2px 2px black;
+    text-align: center;
+}
+option {
+    background-color: white;
+    color: black;
+}
+
+label {
+    font-size: large;
+    display: block;
+}
+
+#control {
+    background-color: aliceblue;
+    padding: 1rem;
+    border-top: 2px solid;
+}

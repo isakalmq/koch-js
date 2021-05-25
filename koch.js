@@ -112,8 +112,9 @@ function iterate(curr, seed) {
 
 function draw()
 {
+    ctrl = document.getElementById("control")
     canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight-100;
+    canvas.height = window.innerHeight-ctrl.clientHeight-5;
     context.clearRect(0,0, canvas.width, canvas.height);
 
     var width = canvas.clientWidth;
