@@ -3,10 +3,12 @@ const context = canvas.getContext('2d');
 
 var dotArray = [[0.1, 0.1], [0.5, 0.9], [0.9, 0.1]];
 
-//const seed = [[0, 0], [1/3, 0], [0.5, Math.sqrt(3)/6], [2/3, 0], [1, 0]];
-//const seed = [[0,0], [0,0.5], [0.5, 0.5], [0.5, 0], [0.5, -0.5], [1, -0.5], [1,0]];
-const seed = [[0,0], [1/4, 0], [1/4, 1/4], [1/2, 1/4], [1/2, 0], [1/2, -1/4], [3/4, -1/4], [3/4, 0], [1, 0]]
+const koch = [[0, 0], [1/3, 0], [0.5, Math.sqrt(3)/6], [2/3, 0], [1, 0]];
+const weird = [[0,0], [0,0.5], [0.5, 0.5], [0.5, 0], [0.5, -0.5], [1, -0.5], [1,0]];
+const minkowski = [[0,0], [1/4, 0], [1/4, 1/4], [1/2, 1/4], [1/2, 0], [1/2, -1/4], [3/4, -1/4], [3/4, 0], [1, 0]]
+const peano = [[0,0], [0,1], [1/2, 1], [1/2, 0], [1, 0], [1, 1]];
 
+const seed = koch;
 var start = [[0,0], [1,0]];
 //var start = [[0, 0], [1, 0], [0.5, Math.sqrt(3)/6], [0,0]]
 //var start = [[0,0], [0.5, Math.sin(Math.PI/3)], [1,0], [0,0]];
@@ -34,16 +36,9 @@ function line(dots) {
     context.stroke();
 }
 
-function createRotationMatrix(p) {    
-    let angle = Math.atan(p[1]/p[0]);
-    if (p[0] >= 0) {
-        return [[Math.cos(angle), -Math.sin(angle)], 
-                [Math.sin(angle),  Math.cos(angle)]];
-    } else {
-        angle = angle + Math.PI;
-        return [[Math.cos(angle), -Math.sin(angle)], 
-                [Math.sin(angle),  Math.cos(angle)]];
-    }
+function createRotationMatrix(angle) {    
+    return [[Math.cos(angle), -Math.sin(angle)], 
+            [Math.sin(angle),  Math.cos(angle)]];
     
     // Alternative (faster?) solution. 
     // Needs adjusting of angles in the case of p[0] < 0       
@@ -57,7 +52,14 @@ function createRotationMatrix(p) {
 }
 
 function replaceLineSeed(p1, p2, seed) {
-    let rotationMatrix = createRotationMatrix(sub(p2, p1));
+    p = sub(p2, p1);
+    let angle = Math.atan(p[1]/p[0])
+
+    if (p[0] < 0) {
+        angle = angle + Math.PI;
+    }
+    let rotationMatrix = createRotationMatrix(angle);
+
     let l = length(sub(p2, p1));
     let scalingMatrix = [[l, 0],
                          [0, l]];
@@ -69,10 +71,11 @@ function replaceLineSeed(p1, p2, seed) {
 
 function iterate(curr, seed) {
     let returnArray = [];
+    returnArray.push(curr[0])
     let prev = curr[0];
 
     for(let i = 1; i < curr.length; ++i) {
-        let res = replaceLineSeed(prev, curr[i], seed);
+        let res = replaceLineSeed(prev, curr[i], seed).slice(1);
         res.forEach(element => returnArray.push(element));
         prev = curr[i]
     }

@@ -24,3 +24,11 @@ function sub(vec1, vec2) {
 function add(v1, v2) {
     return [v1[0] + v2[0], v1[1] + v2[1]]
 }
+
+function dot(v1, v2) {
+    return v1[0] * v2[0] + v1[1] * v2[1]
+}
+
+function det(mat) {
+    return mat[0][0]*mat[1][1] - mat[1][0]*mat[0][1];
+}
