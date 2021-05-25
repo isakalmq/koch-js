@@ -97,6 +97,7 @@ document.getElementById("iterate-button").addEventListener("click", function() {
 document.getElementById("reset-button").addEventListener("click", function() {
     curr = start;
     scale = 1;
+    offset = [10,10];
     updateZoomIndicator();
     draw();
 })
