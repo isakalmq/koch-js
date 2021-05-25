@@ -12,9 +12,10 @@ var prevMouseX;
 var prevMouseY;
 var offset = [10,10];
 
-var scale = 2;
+var scale = 1;
 
 var curr = start;
+
 function transformToAbs(dots, width, height) {
     let returnArray = [];
     dots.forEach(element => returnArray.push([element[0]*width*scale+offset[0], element[1]*height*scale+offset[1]]))
@@ -92,9 +93,27 @@ document.getElementById("iterate-button").addEventListener("click", function() {
     curr = iterate(curr, seed);
     draw();
 })
+
 document.getElementById("reset-button").addEventListener("click", function() {
     curr = start;
-    console.log("#ag")
+    scale = 1;
+    updateZoomIndicator();
+    draw();
+})
+
+function updateZoomIndicator() {
+    document.getElementById("zoom-indicator").innerHTML = Math.round(scale*100) + " %"
+}
+
+document.getElementById("zoom-in-button").addEventListener("click", function() {
+    scale = scale+0.1
+    updateZoomIndicator();
+    draw();
+})
+
+document.getElementById("zoom-out-button").addEventListener("click", function() {
+    scale = scale-0.1
+    updateZoomIndicator();
     draw();
 })
 
