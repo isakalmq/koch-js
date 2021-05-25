@@ -4,6 +4,16 @@ const context = canvas.getContext('2d');
 var seedMap = new Map();
 seedMap.set('Koch', [[0, 0], [1/3, 0], [0.5, Math.sqrt(3)/6], [2/3, 0], [1, 0]]);
 seedMap.set('Minkowski', [[0,0], [1/4, 0], [1/4, 1/4], [1/2, 1/4], [1/2, 0], [1/2, -1/4], [3/4, -1/4], [3/4, 0], [1, 0]]);
+seedMap.set('Cesàro 50', cesaro(Math.PI-50*Math.PI/180));
+
+seedMap.set('Cesàro 60', cesaro(Math.PI-Math.PI/3));
+seedMap.set('Cesàro 70', cesaro(Math.PI-70*Math.PI/180));
+seedMap.set('Cesàro 80', cesaro(Math.PI-80*Math.PI/180));
+seedMap.set('Cesàro 85', cesaro(Math.PI-85*Math.PI/180));
+seedMap.set('Cesàro 90', cesaro(Math.PI-90*Math.PI/180));
+
+
+
 
 var shapeMap = new Map();
 shapeMap.set('Line', [[0,0], [1,0]]);
@@ -26,6 +36,14 @@ reset();
 updateZoomIndicator();
 updateIterationIndicator();
 draw();
+
+function cesaro(angle) {
+    let h = Math.tan((Math.PI - angle)/2)/2
+    let l = h/Math.sin(Math.PI - angle);
+    console.log(`Angle: ${angle}, h: ${h}, l: ${l}`);
+
+    return [[0,0], [l, 0], [0.5, h], [1-l, 0], [1,0]];
+}
 
 function reset() {
     offset = [260,260];
