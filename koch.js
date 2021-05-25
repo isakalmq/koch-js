@@ -17,13 +17,22 @@ var start = shapeMap.get('Line');
 var moving = false;
 var prevMouseX;
 var prevMouseY;
-var offset = [260,260];
 
-var scale = 0.5;
+var offset;
+var scale;
+var iteration;
+var curr;
+reset();
+updateZoomIndicator();
+updateIterationIndicator();
+draw();
 
-var iteration = 0;
-var curr = start;
-
+function reset() {
+    offset = [260,260];
+    scale = 0.5;
+    iteration = 0;
+    curr = start;
+}
 function transformToAbs(dots, width, height) {
     let returnArray = [];
     dots.forEach(element => returnArray.push([element[0]*width*scale+offset[0], element[1]*height*scale+offset[1]]))
@@ -109,10 +118,7 @@ document.getElementById("iterate-button").addEventListener("click", e => {
 
 document.getElementById("reset-button").addEventListener("click", e => {
     e.preventDefault();
-    curr = start;
-    scale = 1;
-    offset = [10,10];
-    iteration = 0;
+    reset();
     updateZoomIndicator();
     updateIterationIndicator();
     draw();
@@ -159,5 +165,3 @@ canvas.addEventListener('wheel', e =>{
     updateZoomIndicator();
     draw();
 })
-
-draw();
