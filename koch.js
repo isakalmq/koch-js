@@ -6,7 +6,8 @@ var dotArray = [[0.1, 0.1], [0.5, 0.9], [0.9, 0.1]];
 const seed = [[0, 0], [1/3, 0], [0.5, Math.sqrt(3)/6], [2/3, 0], [1, 0]];
 
 var start = [[0,0], [1,0]];
-
+var start = [[0, 0], [1, 0], [0.5, Math.sqrt(3)/6], [0,0]]
+var start = [[0,0], [0.5, Math.sin(Math.PI/3)], [1,0], [0,0]];
 var moving = false;
 var prevMouseX;
 var prevMouseY;
@@ -14,6 +15,7 @@ var offset = [10,10];
 
 var scale = 1;
 
+var iteration = 0;
 var curr = start;
 
 function transformToAbs(dots, width, height) {
@@ -89,8 +91,11 @@ function draw()
 }
 
 window.addEventListener('resize', draw);
+
 document.getElementById("iterate-button").addEventListener("click", function() {
     curr = iterate(curr, seed);
+    iteration++;
+    updateIterationIndicator();
     draw();
 })
 
@@ -98,7 +103,9 @@ document.getElementById("reset-button").addEventListener("click", function() {
     curr = start;
     scale = 1;
     offset = [10,10];
+    iteration = 0;
     updateZoomIndicator();
+    updateIterationIndicator();
     draw();
 })
 
@@ -106,30 +113,34 @@ function updateZoomIndicator() {
     document.getElementById("zoom-indicator").innerHTML = Math.round(scale*100) + " %"
 }
 
+function updateIterationIndicator() {
+    document.getElementById("iteration-indicator").innerHTML = "Iteration: " + iteration;
+}
+
 document.getElementById("zoom-in-button").addEventListener("click", function() {
-    scale = scale+0.1
+    scale += 0.1
     updateZoomIndicator();
     draw();
 })
 
 document.getElementById("zoom-out-button").addEventListener("click", function() {
-    scale = scale-0.1
+    scale -= 0.1
     updateZoomIndicator();
     draw();
 })
 
-canvas.addEventListener("mousedown", e => {
+canvas.addEventListener("pointerdown", e => {
     prevMouseX = e.offsetX;
     prevMouseY = e.offsetY;
     moving = true;
 })
 
-canvas.addEventListener("mouseup", e => {
+canvas.addEventListener("pointerup", e => {
     moving = false;
 
 })
 
-canvas.addEventListener("mousemove", e => {
+canvas.addEventListener("pointermove", e => {
     if(moving) {
         offset = [offset[0] + e.offsetX-prevMouseX, offset[1] + e.offsetY-prevMouseY]
         prevMouseX = e.offsetX;
