@@ -87,7 +87,7 @@ function draw()
     line(transformToAbs(curr, minHW, minHW));
 }
 
-//window.addEventListener('resize', draw);
+window.addEventListener('resize', draw);
 document.getElementById("iterate-button").addEventListener("click", function() {
     curr = iterate(curr, seed);
     draw();
