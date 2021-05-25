@@ -93,6 +93,7 @@ function draw()
 window.addEventListener('resize', draw);
 
 document.getElementById("iterate-button").addEventListener("click", function() {
+    e.preventDefault();
     curr = iterate(curr, seed);
     iteration++;
     updateIterationIndicator();
@@ -100,6 +101,7 @@ document.getElementById("iterate-button").addEventListener("click", function() {
 })
 
 document.getElementById("reset-button").addEventListener("click", function() {
+    e.preventDefault();
     curr = start;
     scale = 1;
     offset = [10,10];
@@ -118,29 +120,34 @@ function updateIterationIndicator() {
 }
 
 document.getElementById("zoom-in-button").addEventListener("click", function() {
+    e.preventDefault();
     scale += 0.1
     updateZoomIndicator();
     draw();
 })
 
 document.getElementById("zoom-out-button").addEventListener("click", function() {
+    e.preventDefault();
     scale -= 0.1
     updateZoomIndicator();
     draw();
 })
 
 canvas.addEventListener("pointerdown", e => {
+    e.preventDefault();
     prevMouseX = e.offsetX;
     prevMouseY = e.offsetY;
     moving = true;
 })
 
 canvas.addEventListener("pointerup", e => {
+    e.preventDefault();
     moving = false;
 
 })
 
 canvas.addEventListener("pointermove", e => {
+    e.preventDefault();
     if(moving) {
         offset = [offset[0] + e.offsetX-prevMouseX, offset[1] + e.offsetY-prevMouseY]
         prevMouseX = e.offsetX;
@@ -148,4 +155,13 @@ canvas.addEventListener("pointermove", e => {
         draw();
     }
 })
+
+canvas.addEventListener('wheel', e =>{
+    console.log("Hej!");
+    e.preventDefault()
+    scale += e.deltaY * -0.01;
+    updateZoomIndicator();
+    draw();
+})
+
 draw();
