@@ -4,8 +4,9 @@ const context = canvas.getContext('2d');
 var seedMap = new Map();
 seedMap.set('Koch', [[0, 0], [1/3, 0], [0.5, Math.sqrt(3)/6], [2/3, 0], [1, 0]]);
 seedMap.set('Minkowski', [[0,0], [1/4, 0], [1/4, 1/4], [1/2, 1/4], [1/2, 0], [1/2, -1/4], [3/4, -1/4], [3/4, 0], [1, 0]]);
+seedMap.set('?', [[0,0], [1/2, Math.sqrt(1/3)/2], [1/2, -Math.sqrt(1/3)/2], [1,0]])
+seedMap.set('?2', [[0,0], [1/4, 1/4], [1/2, 0], [3/4, -1/4], [1,0]])
 seedMap.set('Cesàro 50', cesaro(Math.PI-50*Math.PI/180));
-
 seedMap.set('Cesàro 60', cesaro(Math.PI-Math.PI/3));
 seedMap.set('Cesàro 70', cesaro(Math.PI-70*Math.PI/180));
 seedMap.set('Cesàro 80', cesaro(Math.PI-80*Math.PI/180));
@@ -18,8 +19,10 @@ seedMap.set('Cesàro 90', cesaro(Math.PI-90*Math.PI/180));
 var shapeMap = new Map();
 shapeMap.set('Line', [[0,0], [1,0]]);
 shapeMap.set('Triangle', [[0,0], [0.5, Math.sin(Math.PI/3)], [1,0], [0,0]]);
-shapeMap.set('Inverted triangle', [[0,0], [1,0],[0.5, Math.sin(Math.PI/3)], [0,0]]);
+shapeMap.set('Inner triangle', [[0,0], [1,0],[0.5, Math.sin(Math.PI/3)], [0,0]]);
 shapeMap.set('Square', [[0,0], [0,1], [1,1], [1,0], [0,0]]);
+shapeMap.set('Inner square', [[0,0], [1,0], [1,1], [0,1], [0,0]]);
+
 
 var seed = seedMap.get('Koch');
 var start = shapeMap.get('Line');
