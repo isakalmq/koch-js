@@ -27,9 +27,16 @@ shapeMap.set('Inner square', [[0,0], [1,0], [1,1], [0,1], [0,0]]);
 var seed = seedMap.get('Koch');
 var start = shapeMap.get('Line');
 
+var scale = 1;
+var originX = 0;
+var originY = 0;
+var visibleWidth = canvas.clientWidth;
+var visibleHeight = canvas.clientHeight;
+
 var iteration;
 var curr;
-
+var offset;
+var curveScale;
 reset();
 draw();
 
@@ -41,12 +48,26 @@ function cesaro(angle) {
 }
 
 function reset() {
+    scale = 1;
+    originX = 0;
+    originY = 0;
+    visibleWidth = canvas.clientWidth;
+    visibleHeight = canvas.clientHeight;
+
     iteration = 0;
     curr = start;
+
+    ctrl = document.getElementById("control")
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight-ctrl.clientHeight-5;
+    context.clearRect(0,0, canvas.width, canvas.height);
+
+    curveScale = Math.min(canvas.width, canvas.height)*0.6;
+    offset = [(canvas.width - curveScale)/2, (canvas.height - curveScale)/2]
 }
 function transformToAbs(dots, scale) {
     let returnArray = [];
-    dots.forEach(element => returnArray.push([element[0]*scale, element[1]*scale]))
+    dots.forEach(element => returnArray.push([element[0]*scale + offset[0], element[1]*scale + offset[1]]))
     return returnArray;
 }
 
@@ -54,6 +75,7 @@ function line(dots) {
     context.beginPath();
     context.moveTo(dots[0][0], dots[0][1]);
     dots.forEach(element => context.lineTo(element[0], element[1]));
+    //context.closePath();
     context.stroke();
 }
 
@@ -90,13 +112,28 @@ function iterate(curr, seed) {
 
 function draw()
 {
-    ctrl = document.getElementById("control")
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight-ctrl.clientHeight-5;
-    context.clearRect(0,0, canvas.width, canvas.height);
+    context.fillStyle = "white";
+    context.fillRect(originX, originY, canvas.width*1/scale, canvas.height*1/scale);
 
     var width = canvas.clientWidth;
     var height = canvas.clientHeight;
-
+    
     line(transformToAbs(curr, 500));
+}
+
+function zoom(zoom, point) {
+    console.log("zooom: " + zoom);
+    context.translate(originX, originY)
+
+    originX -= point[0] / (scale * zoom) - point[0] / scale;
+    originY -= point[1] / (scale * zoom) - point[1] / scale;
+
+    context.scale(zoom, zoom)
+    context.translate(-originX, -originY);
+
+    scale *= zoom;
+
+    visibleWidth = canvas.clientHeight / scale;
+    visibleHeight = canvas.clientWidth / scale;
+    draw();
 }

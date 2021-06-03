@@ -40,7 +40,6 @@ function pointerdown_handler(ev) {
     // The pointerdown event signals the start of a touch interaction.
     // This event is cached to support 2-finger gestures
     evCache.push(ev);
-    console.log("event!!")
 }
 
 function pointermove_handler(ev) {
@@ -63,7 +62,7 @@ function pointermove_handler(ev) {
    
     if (evCache.length == 1) {
         if(moving) {
-            offset = [offset[0] + ev.offsetX-prevMouseX, offset[1] + ev.offsetY-prevMouseY]
+            offset = [offset[0] + (ev.offsetX-prevMouseX)/scale, offset[1] + (ev.offsetY-prevMouseY)/scale]
             prevMouseX = ev.offsetX;
             prevMouseY = ev.offsetY;
             draw();
@@ -76,15 +75,22 @@ function pointermove_handler(ev) {
       var curDiff = Math.abs(evCache[0].clientX - evCache[1].clientX);
    
       if (prevDiff > 0) {
+        //let amount = Math.exp(-0.01*(curDiff-prevDiff < 0 ? 1 : -2));
+        let amount = Math.exp(0.005*(curDiff-prevDiff));
+
+        let point = [(evCache[0].clientX + evCache[1].clientX)/2, (evCache[0].clientY + evCache[1].clientY)/2];
+
         if (curDiff > prevDiff) {
           // The distance between the two pointers has increased
-            scale +=0.01;
-            draw();
+          zoom(amount, point);
+          draw();
+          updateZoomIndicator();
         }
         if (curDiff < prevDiff) {
           // The distance between the two pointers has decreased
-          scale -=0.01;
+          zoom(amount, point);
           draw();
+          updateZoomIndicator();
         }
       }
    
@@ -131,7 +137,16 @@ function remove_event(ev) {
     }
 }
 
-window.addEventListener('resize', draw);
+window.addEventListener('resize', e => {
+  oldTransform = canvas.getTransform();
+  
+  ctrl = document.getElementById("control")
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight-ctrl.clientHeight-5;
+  context.clearRect(0,0, canvas.width, canvas.height);
+
+  canvas.transform(oldTransform)
+});
 
 document.getElementById("iterate-button").addEventListener("click", e => {
     e.preventDefault();
@@ -159,14 +174,14 @@ function updateIterationIndicator() {
 
 document.getElementById("zoom-in-button").addEventListener("click", e => {
     e.preventDefault();
-    scale += 0.1
+    zoom(1.1, [canvas.clientWidth/2, canvas.clientHeight/2])
     updateZoomIndicator();
     draw();
 })
 
 document.getElementById("zoom-out-button").addEventListener("click", e => {
     e.preventDefault();
-    scale -= 0.1
+    zoom(0.9, [canvas.clientWidth/2, canvas.clientHeight/2])
     updateZoomIndicator();
     draw();
 })
@@ -186,7 +201,7 @@ canvas.addEventListener("pointerup", e => {
 
 canvas.addEventListener('wheel', e =>{
     e.preventDefault()
-    scale += e.deltaY * -0.01;
+    zoom(Math.exp(e.deltaY*-0.01), [e.clientX, e.clientY]);
     updateZoomIndicator();
     draw();
 })
