@@ -31,32 +31,28 @@ var moving = false;
 var prevMouseX;
 var prevMouseY;
 
-var offset;
 var scale;
 var iteration;
 var curr;
+
 reset();
-updateZoomIndicator();
-updateIterationIndicator();
 draw();
 
 function cesaro(angle) {
     let h = Math.tan((Math.PI - angle)/2)/2
     let l = h/Math.sin(Math.PI - angle);
-    console.log(`Angle: ${angle}, h: ${h}, l: ${l}`);
 
     return [[0,0], [l, 0], [0.5, h], [1-l, 0], [1,0]];
 }
 
 function reset() {
-    offset = [260,260];
     scale = 0.5;
     iteration = 0;
     curr = start;
 }
-function transformToAbs(dots, width, height) {
+function transformToAbs(dots, scale) {
     let returnArray = [];
-    dots.forEach(element => returnArray.push([element[0]*width*scale+offset[0], element[1]*height*scale+offset[1]]))
+    dots.forEach(element => returnArray.push([element[0]*scale, element[1]*scale]))
     return returnArray;
 }
 
@@ -65,21 +61,6 @@ function line(dots) {
     context.moveTo(dots[0][0], dots[0][1]);
     dots.forEach(element => context.lineTo(element[0], element[1]));
     context.stroke();
-}
-
-function createRotationMatrix(angle) {    
-    return [[Math.cos(angle), -Math.sin(angle)], 
-            [Math.sin(angle),  Math.cos(angle)]];
-    
-    // Alternative (faster?) solution. 
-    // Needs adjusting of angles in the case of p[0] < 0       
-    /*
-    let fac = p[1]/p[0];
-    let s = 1/Math.sqrt(1+Math.pow(fac,2));
-
-    return [[s, -s*fac],
-            [s*fac,  s]];
-    */
 }
 
 function replaceLineSeed(p1, p2, seed) {
@@ -122,68 +103,6 @@ function draw()
 
     var width = canvas.clientWidth;
     var height = canvas.clientHeight;
-    var relPosH = 0.5;
-    var relPosW = 0.5;
-    var minHW = Math.min(width, height);
-    line(transformToAbs(curr, minHW, minHW));
+
+    line(transformToAbs(curr, 500));
 }
-
-window.addEventListener('resize', draw);
-
-document.getElementById("iterate-button").addEventListener("click", e => {
-    e.preventDefault();
-    curr = iterate(curr, seed);
-    iteration++;
-    updateIterationIndicator();
-    draw();
-})
-
-document.getElementById("reset-button").addEventListener("click", e => {
-    e.preventDefault();
-    reset();
-    updateZoomIndicator();
-    updateIterationIndicator();
-    draw();
-})
-
-function updateZoomIndicator() {
-    document.getElementById("zoom-indicator").innerHTML = Math.round(scale*100) + " %"
-}
-
-function updateIterationIndicator() {
-    document.getElementById("iteration-indicator").innerHTML = "Iteration: " + iteration;
-}
-
-document.getElementById("zoom-in-button").addEventListener("click", e => {
-    e.preventDefault();
-    scale += 0.1
-    updateZoomIndicator();
-    draw();
-})
-
-document.getElementById("zoom-out-button").addEventListener("click", e => {
-    e.preventDefault();
-    scale -= 0.1
-    updateZoomIndicator();
-    draw();
-})
-
-canvas.addEventListener("pointerdown", e => {
-    e.preventDefault();
-    prevMouseX = e.offsetX;
-    prevMouseY = e.offsetY;
-    moving = true;
-})
-
-canvas.addEventListener("pointerup", e => {
-    e.preventDefault();
-    moving = false;
-
-})
-
-canvas.addEventListener('wheel', e =>{
-    e.preventDefault()
-    scale += e.deltaY * -0.01;
-    updateZoomIndicator();
-    draw();
-})

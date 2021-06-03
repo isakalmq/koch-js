@@ -32,3 +32,18 @@ function dot(v1, v2) {
 function det(mat) {
     return mat[0][0]*mat[1][1] - mat[1][0]*mat[0][1];
 }
+
+function createRotationMatrix(angle) {    
+    return [[Math.cos(angle), -Math.sin(angle)], 
+            [Math.sin(angle),  Math.cos(angle)]];
+    
+    // Alternative (faster?) solution. 
+    // Needs adjusting of angles in the case of p[0] < 0       
+    /*
+    let fac = p[1]/p[0];
+    let s = 1/Math.sqrt(1+Math.pow(fac,2));
+
+    return [[s, -s*fac],
+            [s*fac,  s]];
+    */
+}

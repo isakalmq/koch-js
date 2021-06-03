@@ -127,4 +127,66 @@ function remove_event(ev) {
     }
 }
 
+window.addEventListener('resize', draw);
+
+document.getElementById("iterate-button").addEventListener("click", e => {
+    e.preventDefault();
+    curr = iterate(curr, seed);
+    iteration++;
+    updateIterationIndicator();
+    draw();
+})
+
+document.getElementById("reset-button").addEventListener("click", e => {
+    e.preventDefault();
+    reset();
+    updateZoomIndicator();
+    updateIterationIndicator();
+    draw();
+})
+
+function updateZoomIndicator() {
+    document.getElementById("zoom-indicator").innerHTML = Math.round(scale*100) + " %"
+}
+
+function updateIterationIndicator() {
+    document.getElementById("iteration-indicator").innerHTML = "Iteration: " + iteration;
+}
+
+document.getElementById("zoom-in-button").addEventListener("click", e => {
+    e.preventDefault();
+    scale += 0.1
+    updateZoomIndicator();
+    draw();
+})
+
+document.getElementById("zoom-out-button").addEventListener("click", e => {
+    e.preventDefault();
+    scale -= 0.1
+    updateZoomIndicator();
+    draw();
+})
+
+canvas.addEventListener("pointerdown", e => {
+    e.preventDefault();
+    prevMouseX = e.offsetX;
+    prevMouseY = e.offsetY;
+    moving = true;
+})
+
+canvas.addEventListener("pointerup", e => {
+    e.preventDefault();
+    moving = false;
+
+})
+
+canvas.addEventListener('wheel', e =>{
+    e.preventDefault()
+    scale += e.deltaY * -0.01;
+    updateZoomIndicator();
+    draw();
+})
+
+updateZoomIndicator();
+updateIterationIndicator();
 init();
