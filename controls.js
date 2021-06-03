@@ -1,6 +1,10 @@
 seedSelector = document.getElementById("seed-selector");
 shapeSelector = document.getElementById("shape-selector");
 
+var moving = false;
+var prevMouseX;
+var prevMouseY;
+
 function generateInnerHTML(map) {
     ih = '';
     for(const key of map.keys()) {

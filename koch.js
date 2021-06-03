@@ -27,11 +27,6 @@ shapeMap.set('Inner square', [[0,0], [1,0], [1,1], [0,1], [0,0]]);
 var seed = seedMap.get('Koch');
 var start = shapeMap.get('Line');
 
-var moving = false;
-var prevMouseX;
-var prevMouseY;
-
-var scale;
 var iteration;
 var curr;
 
@@ -46,7 +41,6 @@ function cesaro(angle) {
 }
 
 function reset() {
-    scale = 0.5;
     iteration = 0;
     curr = start;
 }
