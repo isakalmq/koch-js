@@ -19,14 +19,14 @@ shapeSelector.innerHTML = generateInnerHTML(shapeMap);
 
 seedSelector.addEventListener('change', e => {
     e.preventDefault();
-    seed = seedMap.get(seedSelector.value);
+    //seed = seedMap.get(seedSelector.value);
+    currFractal = new kochLikeFractal(shapeMap.get(shapeSelector.value), seedMap.get(seedSelector.value))
     draw();
 })
 
 shapeSelector.addEventListener('change', e => {
     e.preventDefault();
-    start = shapeMap.get(shapeSelector.value);
-    curr = start;
+    currFractal = new kochLikeFractal(shapeMap.get(shapeSelector.value), seedMap.get(seedSelector.value))
     draw();
 })
 
@@ -150,15 +150,14 @@ window.addEventListener('resize', e => {
 
 document.getElementById("iterate-button").addEventListener("click", e => {
     e.preventDefault();
-    curr = iterate(curr, seed);
-    iteration++;
+    currFractal.iterate();
     updateIterationIndicator();
     draw();
 })
 
 document.getElementById("reset-button").addEventListener("click", e => {
     e.preventDefault();
-    reset();
+    currFractal.reset();
     updateZoomIndicator();
     updateIterationIndicator();
     draw();
