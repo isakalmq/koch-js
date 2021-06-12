@@ -138,14 +138,14 @@ function remove_event(ev) {
 }
 
 window.addEventListener('resize', e => {
-  oldTransform = canvas.getTransform();
-  
+  oldTransform = context.getTransform();
   ctrl = document.getElementById("control")
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight-ctrl.clientHeight-5;
   context.clearRect(0,0, canvas.width, canvas.height);
 
-  canvas.transform(oldTransform)
+  context.setTransform(oldTransform);
+  draw();
 });
 
 document.getElementById("iterate-button").addEventListener("click", e => {
