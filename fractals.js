@@ -95,6 +95,12 @@ class kochLikeFractal extends lineBasedFractal {
     }
 }
 
+class cesaroFractal extends kochLikeFractal {
+    constructor(start, angleRad) {
+        super(start, cesaro(angleRad))
+    }
+}
+
 class planeFillingFractal extends lineBasedFractal {
     constructor(start, seed) {
         super(start, seed);
